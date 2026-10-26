@@ -16,7 +16,7 @@ body{
 
     h1{
         text-align: center;
-        font-size: 22p;
+        font-size: 22px;
         color: white;
         margin: 0%;
     }
@@ -49,6 +49,7 @@ body{
 
     input{
         width: 100%;
+        box-sizing: border-box;
         padding: 8px;
         font-size: 14px;
         border: 1px solid blanchedalmond;
@@ -97,7 +98,7 @@ body{
         color: white;
         border: 1px solid black;
     }
-    .lista-menu button::hover{background-color: orange;}
+    .lista-menu button:hover{background-color: orange;}
 
     .mensaje{
         margin-top: 10px;
@@ -115,7 +116,7 @@ body{
         padding-top: 10px;
     }
     .resultado table{ width: 100%;border-collapse: collapse; font-size: 14px; }
-    .resultado td{ padding: 50px 0; border-bottom: 1px solidor white;}
+    .resultado td{ padding: 10px 0; border-bottom: 1px solid white;}
     td:last-child{ text-align: right; font-weight: bold; color: white; }
 
     
@@ -125,3 +126,21 @@ body{
     color: #555;
     margin-bottom: 10px;
     }
+
+/* Ajustes del historial CRUD con los mismos colores de la calculadora. */
+.tabla-historial { width: 100%; overflow-x: auto; }
+.tabla-historial table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabla-historial th, .tabla-historial td { text-align: left; padding: 10px 6px; border-bottom: 1px solid #555; }
+.tabla-historial th { color: orange; }
+.tabla-historial button { display: inline-block; width: auto; margin: 3px; padding: 7px 10px; background: orange; color: #111; }
+.tabla-historial button:hover { background: #ffbd45; }
+.mensaje:empty { display: none; }
+
+/* La pantalla se adapta a celulares sin cambiar el diseño base. */
+@media (max-width: 600px) {
+    body { padding: 12px; }
+    .logo { width: 28%; }
+    .panel { width: 100%; padding: 16px; }
+    .fila-doble { gap: 12px; }
+    .fila-doble input { min-width: 0; }
+}

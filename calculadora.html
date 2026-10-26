@@ -9,11 +9,11 @@
 <meta name = "keywords" content="Calculadora, Cálculos, Construcción">
 <meta name = "author" content="Omar Salas">
 <link rel="stylesheet" href="calculadora.css">
-<link rel="icon" type="calculadora.webp" href="calculadora.webp">
+<link rel="icon" type="image/webp" href="calculadora.webp">
 </head>
 <body>
      <h1>Calculadora</h1>
-<img class="logo" src="calculadora.webp">
+<img class="logo" src="calculadora.webp" alt="Logo de BuildCalc">
 
 <section id="pantallaAuth" class="panel">
     <h2 id="tituloAuth">Iniciar sesión</h2>
@@ -37,6 +37,7 @@
     <li><button data-ir="pantallaTecho">Calcular techo</button></li>
     <li><button data-ir="pantallaPiso">Calcular pisos</button></li>
     <li><button data-ir="pantallaPintura">Calcular pintura</button></li>
+    <li><button data-ir="pantallaHistorial">Historial de cálculos</button></li>
     <li><button id="btnSalir">Salir</button></li>
     </ul>
 </section>
@@ -144,255 +145,23 @@
         <button class="btn-secundario" onclick="mostrarPantalla('pantallaMenu')">Volver al menú</button>
         <div id="resultadoPintura" class="resultado oculto"></div>
 </section>
-<script>    
-let usuarios = [];
-let usuarioActivo = null;
-let modoRegistro = false;
 
-    function mostrarPantalla(idPantalla) {
-    document.querySelectorAll(".panel").forEach(function (p) {  
-    p.classList.add("oculto");
-    });
-    document.getElementById(idPantalla).classList.remove("oculto");
-}
 
-    document.getElementById("btnCambiarModo").addEventListener("click", function () {
-    modoRegistro = !modoRegistro;
-    const titulo = document.getElementById("tituloAuth");
-    const botonAccion = document.getElementById("btnAccionAuth");
-    const botonCambiar = document.getElementById("btnCambiarModo");
+   
+<section id="pantallaHistorial" class="panel oculto">
+    <h2>Historial de cálculos</h2>
+    <p id="mensajeHistorial" class="mensaje"></p>
+    <div class="tabla-historial">
+        <table>
+            <thead><tr><th>Cálculo</th><th>Fecha</th><th>Acciones</th></tr></thead>
+            <tbody id="filasHistorial"></tbody>
+        </table>
+    </div>
+    <button class="btn-secundario" onclick="mostrarPantalla('pantallaMenu')">Volver al menú</button>
+</section>
 
-    if (modoRegistro) {
-    titulo.textContent = "Crear cuenta";
-    botonAccion.textContent = "Registrarme";
-    botonCambiar.textContent = "¿Ya tienes cuenta? Inicia sesión";
-    } else {
-    titulo.textContent = "Iniciar sesión";
-    botonAccion.textContent = "Ingresar";
-    botonCambiar.textContent = "¿No tienes cuenta? Regístrate";
-    }
-    ocultarMensajeAuth();
-});
+<script src="JS/app.js"></script>
 
-    document.getElementById("btnAccionAuth").addEventListener("click", function () {
-    if (modoRegistro) {
-        registrarUsuario();
-    } else {
-    iniciarSesion();
-    }
-});
-
-function mostrarMensajeAuth(texto, tipo) {
-    const caja = document.getElementById("mensajeAuth");
-    caja.textContent = texto;
-    caja.className = "mensaje " + tipo;
-}
-    function ocultarMensajeAuth() {
-    const caja = document.getElementById("mensajeAuth");
-    caja.className = "mensaje";
-    caja.textContent = "";
-}
-
-    function registrarUsuario() {
-    const usuario = document.getElementById("authUsuario").value.trim();
-    const password = document.getElementById("authPassword").value.trim();
-
-    if (usuario === "" || password === "") {      
-        mostrarMensajeAuth("Debes completar usuario y contraseña.", "error");
-    return;
-    }
-
-    const yaExiste = usuarios.find(function (u) { return u.usuario === usuario; });
-    if (yaExiste) {
-        mostrarMensajeAuth("Ese usuario ya existe, elige otro.", "error");
-            return;
-    }
-
-    usuarios.push({ usuario: usuario, password: password });
-        mostrarMensajeAuth("Cuenta creada. Ahora inicia sesión.", "ok");
-            document.getElementById("btnCambiarModo").click();
-            document.getElementById("authPassword").value = "";
-}
-
-    function iniciarSesion() {
-        const usuario = document.getElementById("authUsuario").value.trim();
-        const password = document.getElementById("authPassword").value.trim();
-
-    const encontrado = usuarios.find(function (u) {
-        return u.usuario === usuario && u.password === password;
-    });
-
-    if (!encontrado) {
-        mostrarMensajeAuth("Usuario o contraseña incorrectos.", "error");
-            return;
-    }
-
-    usuarioActivo = encontrado;
-        document.getElementById("nombreUsuarioActivo").textContent = usuarioActivo.usuario;
-        mostrarPantalla("pantallaMenu");
-}
-
-    document.querySelectorAll(".lista-menu button[data-ir]").forEach(function (boton) {
-    boton.addEventListener("click", function () {
-        mostrarPantalla(boton.getAttribute("data-ir"));
-    });
-});
-
-    document.getElementById("btnSalir").addEventListener("click", function () {
-        usuarioActivo = null;
-        document.getElementById("authUsuario").value = "";
-        document.getElementById("authPassword").value = "";
-        ocultarMensajeAuth();
-        mostrarPantalla("pantallaAuth");
-});
-
-  function calcularSuperficie(largo, ancho) { return largo * ancho; }
-  function calcularVolumen(largo, ancho, alto) { return largo * ancho * alto; }
-
-    function leerNumero(idInput) {
-        return parseFloat(document.getElementById(idInput).value);
-}
-
-    function mostrarResultado(idDiv, filas) {
-        let html = "<table>";
-        filas.forEach(function (fila) {
-        html += "<tr><td>" + fila[0] + "</td><td>" + fila[1] + "</td></tr>";
-    });
-    html += "</table>";
-    const div = document.getElementById(idDiv);
-    div.innerHTML = html;
-    div.classList.remove("oculto");
-}
-
-    function calcularMuro() {
-        const espesor = document.getElementById("muroEspesor").value;
-        const largo = leerNumero("muroLargo");
-        const alto = leerNumero("muroAlto");
-
-    if (isNaN(largo) || isNaN(alto) || largo <= 0 || alto <= 0) {
-        alert("Ingresa un largo y un alto válidos (mayores a 0).");
-            return;
-    }
-
-    const superficie = calcularSuperficie(largo, alto);
-    const consumoPorM2 = {
-        "20": { cemento: 10.9, arena: 0.09, ladrillos: 90 },
-        "30": { cemento: 15.2, arena: 0.115, ladrillos: 120 }
-    };
-    const consumo = consumoPorM2[espesor];
-
-    mostrarResultado("resultadoMuro", [
-        ["Superficie del muro", superficie.toFixed(2) + " m²"],
-        ["Cemento", (superficie * consumo.cemento).toFixed(2) + " kg"],
-        ["Arena", (superficie * consumo.arena).toFixed(3) + " m³"],
-        ["Ladrillos", Math.ceil(superficie * consumo.ladrillos) + " unidades"]
-    ]);
-}
-
-    function calcularViga() {
-        const largo = leerNumero("vigaLargo");
-        if (isNaN(largo) || largo <= 0) {
-            alert("Ingresa un largo válido (mayor a 0).");
-                return;
-    }
-
-    mostrarResultado("resultadoViga", [
-      ["Cemento", (largo * 9).toFixed(2) + " kg"],
-      ["Arena", (largo * 0.02).toFixed(3) + " m³"],
-      ["Piedra", (largo * 0.02).toFixed(3) + " m²"],
-      ["Hierro del 8", (largo * 4).toFixed(2) + " m"],
-      ["Hierro del 4", (largo * 3).toFixed(2) + " m"]
-    ]);
-}
-
-    function calcularColumna() {
-    const largo = leerNumero("columnaLargo");
-    if (isNaN(largo) || largo <= 0) {
-        alert("Ingresa un largo válido (mayor a 0).");
-            return;
-    }
-
-    mostrarResultado("resultadoColumna", [
-      ["Cemento", (largo * 7.5).toFixed(2) + " kg"],
-      ["Arena", (largo * 0.016).toFixed(3) + " m³"],
-      ["Piedra", (largo * 0.016).toFixed(3) + " m²"],
-      ["Hierro del 10", (largo * 6).toFixed(2) + " m"],
-      ["Hierro del 4", (largo * 3).toFixed(2) + " m"]
-    ]);
-}
-
-    function calcularContrapiso() {
-    const espesor = leerNumero("contrapisoEspesor");
-    const ancho = leerNumero("contrapisoAncho");
-    const largo = leerNumero("contrapisoLargo");
-
-    if ([espesor, ancho, largo].some(function (v) { return isNaN(v) || v <= 0; })) {
-        alert("Ingresa espesor, ancho y largo válidos (mayores a 0).");
-            return;
-    }
-
-    const volumen = calcularVolumen(largo, ancho, espesor);
-    mostrarResultado("resultadoContrapiso", [
-        ["Volumen del contrapiso", volumen.toFixed(3) + " m³"],
-        ["Cemento", (volumen * 105).toFixed(2) + " kg"],
-        ["Arena", (volumen * 0.45).toFixed(3) + " m³"],
-        ["Piedra", (volumen * 0.9).toFixed(3) + " m³"]
-    ]);
-}
-
-    function calcularTecho() {
-        const espesor = leerNumero("techoEspesor");
-        const ancho = leerNumero("techoAncho");
-        const largo = leerNumero("techoLargo");
-
-    if ([espesor, ancho, largo].some(function (v) { return isNaN(v) || v <= 0; })) {
-        alert("Ingresa espesor, ancho y largo válidos (mayores a 0).");
-            return;
-    }
-
-    const superficie = calcularSuperficie(largo, ancho);
-    mostrarResultado("resultadoTecho", [
-        ["Superficie del techo", superficie.toFixed(2) + " m²"],
-        ["Cemento", (superficie * 33).toFixed(2) + " kg"],
-        ["Arena", (superficie * 0.072).toFixed(3) + " m³"],
-        ["Piedra", (superficie * 0.072).toFixed(3) + " m³"],
-        ["Hierro del 8", (superficie * 7).toFixed(2) + " m"],
-        ["Hierro del 6", (superficie * 4).toFixed(2) + " m"]
-    ]);
-}
-
-    function calcularPiso() {
-        const ancho = leerNumero("pisoAncho");
-        const largo = leerNumero("pisoLargo");
-
-    if (isNaN(ancho) || isNaN(largo) || ancho <= 0 || largo <= 0) {
-        alert("Ingresa ancho y largo válidos (mayores a 0).");
-            return;
-    }
-
-    const superficie = calcularSuperficie(largo, ancho);
-    const superficieConRecorte = superficie * 1.10;
-
-    mostrarResultado("resultadoPiso", [
-        ["Superficie del paño", superficie.toFixed(2) + " m²"],
-        ["Total a comprar (+10% recorte)", superficieConRecorte.toFixed(2) + " m²"]
-    ]);
-}
-
-    function calcularPintura() {
-        const superficie = leerNumero("pinturaSuperficie");
-        if (isNaN(superficie) || superficie <= 0) {
-            alert("Ingresa una superficie válida (mayor a 0).");
-            return;
-    }
-
-    mostrarResultado("resultadoPintura", [
-        ["Superficie a pintar", superficie.toFixed(2) + " m²"],
-        ["Pintura necesaria", (superficie / 6).toFixed(2) + " L"]
-    ]);
-}
-</script>
-
-   </body>
+</body>
    
 </html>

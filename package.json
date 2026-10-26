@@ -1,0 +1,9 @@
+{
+  "name": "buildcalc-principiante",
+  "version": "1.0.0",
+  "description": "Calculadora de construcción con backend CRUD básico para proyecto académico.",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  }
+}
