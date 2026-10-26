@@ -1,7 +1,7 @@
 {
   "version": "1.1",
-  "tipo": "simulacion-academica",
-  "notaGeneral": "Estimaciones educativas basadas en los parámetros entregados por el profesor. No reemplazan planos ni diseño estructural.",
+  "tipo": "calculadora",
+  "notaGeneral": "Trabajo Universidad",
   "muro": {
     "espesor20cm": {
       "ladrillosPorM2": 90,
