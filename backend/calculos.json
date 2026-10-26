@@ -1,0 +1,56 @@
+{
+  "version": "1.1",
+  "tipo": "simulacion-academica",
+  "notaGeneral": "Estimaciones educativas basadas en los parámetros entregados por el profesor. No reemplazan planos ni diseño estructural.",
+  "muro": {
+    "espesor20cm": {
+      "ladrillosPorM2": 90,
+      "cementoKgPorM2": 10.9,
+      "arenaM3PorM2": 0.09
+    },
+    "espesor30cm": {
+      "ladrillosPorM2": 120,
+      "cementoKgPorM2": 15.2,
+      "arenaM3PorM2": 0.115
+    }
+  },
+  "viga": {
+    "cementoKgPorMetroLineal": 9,
+    "arenaM3PorMetroLineal": 0.02,
+    "piedraM3PorMetroLineal": 0.02,
+    "hierro8MPorMetroLineal": 4,
+    "hierro4MPorMetroLineal": 3,
+    "nota": "Coeficientes aplicados por cada metro lineal de viga. El enunciado escribe piedra en m2; se interpreta como m3 por ser un volumen de agregado y se conserva el coeficiente 0.02."
+  },
+  "columna": {
+    "cementoKgPorMetroLineal": 7.5,
+    "arenaM3PorMetroLineal": 0.016,
+    "piedraM3PorMetroLineal": 0.016,
+    "hierro10MPorMetroLineal": 6,
+    "hierro4MPorMetroLineal": 3,
+    "nota": "Coeficientes aplicados por cada metro lineal de columna. El enunciado escribe piedra en m2; se interpreta como m3 por ser un volumen de agregado y se conserva el coeficiente 0.016."
+  },
+  "contrapiso": {
+    "unidadEspesor": "cm",
+    "cementoKgPorM3": 105,
+    "arenaM3PorM3": 0.45,
+    "piedraM3PorM3": 0.9,
+    "nota": "El espesor se ingresa en centímetros y se convierte a metros para calcular el volumen."
+  },
+  "techo": {
+    "unidadEspesor": "cm",
+    "cementoKgPorM2": 33,
+    "arenaM3PorM2": 0.072,
+    "piedraM3PorM2": 0.072,
+    "hierro8MPorM2": 7,
+    "hierro6MPorM2": 4,
+    "nota": "Los materiales se calculan por metro cuadrado. Se solicita y valida el espesor; el volumen geométrico también se calcula como largo por ancho por espesor en metros."
+  },
+  "piso": {
+    "desperdicioPorcentaje": 10
+  },
+  "pintura": {
+    "rendimientoM2PorLitro": 6,
+    "manos": 1
+  }
+}
